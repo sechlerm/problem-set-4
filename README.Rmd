@@ -1,6 +1,6 @@
 ---
 title: "Problem set 4"
-author: "Your name here"
+author: "Marybeth Sechler"
 date: "`r Sys.Date()`"
 ---
 
@@ -25,6 +25,24 @@ data/hg19.chr1.fa.gz
 
 First build a bowtie2 index with `bowtie2-build` and use `bowtie2` and `samtools` to align the reads to the index.
 
+```{r build index}
+data='/Users/marybethsechler/Desktop/GAW/Homework/problem-set-4/data'
+
+#build index                                                                                                     
+
+gunzip $data/hg19.chr1.fa.gz
+
+
+#bowtie2-build ref filename what you want output called                                                          
+
+bowtie2-build $data/hg19.chr1.fa $data/hg19.chr1
+
+bowtie2 -x hg19.chr1 -U factorx.chr1.fq.gz | samtools sort -o factorx.sort.bam
+
+
+```
+
+
 **The output of the alignment step is a sorted BAM file.**
 
 ### Create bedGraph
@@ -33,6 +51,12 @@ Create a bedGraph file from the sorted BAM files. Use the
 `bedGraphToBigWig` utility and the `hg19.chrom.size` file in the `data/`
 directory.
 
+``` {r make bedgraph}
+
+bedtools genomecov -ibam factorx.sort.bam -g $data/hg19.chrom.sizes -bg > factorx.bg
+
+bedGraphToBigWig factorx.bg $data/hg19.chrom.sizes factorx.bw
+```
 ### Create a track in the UCSC browser
 
 1. Create a branch in your forked repository called `gh-pages`:
