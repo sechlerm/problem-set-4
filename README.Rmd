@@ -64,7 +64,9 @@ bedGraphToBigWig factorx.bg $data/hg19.chrom.sizes factorx.bw
 ```bash
 $ git branch gh-pages
 $ git push origin gh-pages
+
 ```
+URL for created file = 'http://sechlerm.github.io/problem-set-4/data/factorx.bw'
 
 1. Go to the browser and add a "custom track" in the `hg19` genome build.
 your trackline should look something like this (all on one line):
