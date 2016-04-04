@@ -30,3 +30,5 @@ bedtools getfasta -fi hg19.chr1.fa -bed peaks.rand.1000.bed -fo factorxpeak.1000
 
 
 meme factorxpeak.1000.fa -nmotifs 1 -maxw 20 -minw 8 -dna -maxsize 1000000
+
+meme-get-motif -id 1 < meme.txt

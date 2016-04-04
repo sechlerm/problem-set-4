@@ -74,9 +74,10 @@ URL for created file = 'http://sechlerm.github.io/problem-set-4/data/factorx.bg'
 your trackline should look something like this (all on one line):
 
 ```
-track type=bedGraph bigDataUrl="http://<username>.github.io/<repo name>/path/to/bw color=255,0,0 visiblity=full name='chip data' description='chip description'
+#track type=bedGraph bigDataUrl="http://<username>.github.io/<repo name>/path/to/bw #color=255,0,0 visiblity=full name='chip data' description='chip description'
 
 track type=BigWig bigDataUrl="http://sechlerm.github.io/problem-set-4/data/factorx.bw"
+color=255,0,0 visiblity=full name='factorx chipseq' description='sechler hw 4 track'
 ```
 
 ### Peak calling
