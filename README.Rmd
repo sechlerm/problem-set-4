@@ -25,7 +25,9 @@ data/hg19.chr1.fa.gz
 
 First build a bowtie2 index with `bowtie2-build` and use `bowtie2` and `samtools` to align the reads to the index.
 
-```{r build index}
+```bash 
+#build index
+
 data='/Users/marybethsechler/Desktop/GAW/Homework/problem-set-4/data'
 
 #build index                                                                                                     
@@ -51,8 +53,8 @@ Create a bedGraph file from the sorted BAM files. Use the
 `bedGraphToBigWig` utility and the `hg19.chrom.size` file in the `data/`
 directory.
 
-``` {r make bedgraph}
-
+```bash 
+#make bedgraph
 bedtools genomecov -ibam factorx.sort.bam -g $data/hg19.chrom.sizes -bg > factorx.bg
 
 bedGraphToBigWig factorx.bg $data/hg19.chrom.sizes factorx.bw
@@ -66,13 +68,15 @@ $ git branch gh-pages
 $ git push origin gh-pages
 
 ```
-URL for created file = 'http://sechlerm.github.io/problem-set-4/data/factorx.bw'
+URL for created file = 'http://sechlerm.github.io/problem-set-4/data/factorx.bg'
 
 1. Go to the browser and add a "custom track" in the `hg19` genome build.
 your trackline should look something like this (all on one line):
 
 ```
 track type=bedGraph bigDataUrl="http://<username>.github.io/<repo name>/path/to/bw color=255,0,0 visiblity=full name='chip data' description='chip description'
+
+track type=BigWig bigDataUrl="http://sechlerm.github.io/problem-set-4/data/factorx.bw"
 ```
 
 ### Peak calling
@@ -80,7 +84,8 @@ track type=bedGraph bigDataUrl="http://<username>.github.io/<repo name>/path/to/
 Call peaks from the bedGraph data using MACS2.
 
 ```bash
-$ macs2 callpeak -t <BAM file>
+macs2 bdgpeakcall -i factorx.bg  -o factorxpeaks.bed
+
 ```
 
 
@@ -91,15 +96,27 @@ $ macs2 callpeak -t <BAM file>
 1. Derive motifs from the FASTA sequences with `meme`.
 
 ```bash
+
+#bedtools getfasta -fi hg19.chr1.fa -bed factorxpeaks.bed -fo factorxpeak.fa
+
+shuf factorxpeaks.bed | head -n 1000 > peaks.rand.1000.bed
+bedtools getfasta -fi hg19.chr1.fa -bed peaks.rand.1000.bed -fo factorxpeak.1000.fa
+
+
 # if you get an error about "max size" add -maxsize 1000000
-$ meme <FASTA file> -nmotifs 1 -maxw 20 -minw 8 -dna 
+meme factorxpeak.1000.fa -nmotifs 1 -maxw 20 -minw 8 -dna -maxsize 1000000
 ```
 
 1. Extract the motif from the `meme.txt` output and use TOMTOM to identify
 the motif match. You can use the `meme-get-motif` to extract the first motif from the file:
 
 ```bash
+
+
 meme-get-motif -id 1 < meme.txt
 ```
 
 Copy the numeric matrix into the the search box on the tomtom site and report which motif it matches.
+
+Tom Tom finds the most probable factor to be CTCF
+
